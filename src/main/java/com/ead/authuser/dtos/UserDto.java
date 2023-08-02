@@ -19,17 +19,10 @@ public class UserDto {
      * precisa entender melhor o contexto em que se vai utilizar.
      */
     public interface UserView {
-        public static interface RegistrationPost {
-        }
-
-        public static interface UserPut {
-        }
-
-        public static interface PasswordPut {
-        }
-
-        public static interface ImagePut {
-        }
+        public static interface RegistrationPost {}
+        public static interface UserPut {}
+        public static interface PasswordPut {}
+        public static interface ImagePut {}
     }
 
     private UUID userId;

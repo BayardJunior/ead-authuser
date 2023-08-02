@@ -46,6 +46,7 @@ public class UserController {
 
     @GetMapping("/{userId}")
     public ResponseEntity<Object> getUserById(@PathVariable(value = "userId") UUID userId) {
+        log.debug("GET getUserById userId received {}", userId);
         Optional<UserModel> optionalUserModel = userService.findById(userId);
         if (!optionalUserModel.isPresent()) {
             log.warn("GET getUserById userId {} not found", userId);
