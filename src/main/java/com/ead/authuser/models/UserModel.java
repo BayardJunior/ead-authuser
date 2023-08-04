@@ -70,6 +70,6 @@ public class UserModel extends RepresentationModel<UserModel> implements Seriali
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     @Fetch(FetchMode.SUBSELECT)
-    private Set<UserCourseModel> courseModels;
+    private Set<UserCourseModel> userCourses;
 
 }
