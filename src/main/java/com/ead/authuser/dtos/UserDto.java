@@ -19,10 +19,17 @@ public class UserDto {
      * precisa entender melhor o contexto em que se vai utilizar.
      */
     public interface UserView {
-        public static interface RegistrationPost {}
-        public static interface UserPut {}
-        public static interface PasswordPut {}
-        public static interface ImagePut {}
+        public static interface RegistrationPost {
+        }
+
+        public static interface UserPut {
+        }
+
+        public static interface PasswordPut {
+        }
+
+        public static interface ImagePut {
+        }
     }
 
     private UUID userId;
@@ -31,7 +38,7 @@ public class UserDto {
     @Size(min = 4, max = 50, groups = UserView.RegistrationPost.class)
     @UserNameConstraint(groups = UserView.RegistrationPost.class)
     @JsonView(UserView.RegistrationPost.class)
-    private String userName;
+    private String username;
 
     @NotBlank(groups = UserView.RegistrationPost.class)
     @Email(groups = UserView.RegistrationPost.class)

@@ -26,15 +26,15 @@ public class AuthenticationController {
     @Autowired
     UserService userService;
 
-    @PostMapping("/singup")
+    @PostMapping("/signup")
     public ResponseEntity<Object> registerUser(@RequestBody
                                                @Validated(UserDto.UserView.RegistrationPost.class)
                                                @JsonView(UserDto.UserView.RegistrationPost.class) UserDto userDto) {
 
         log.debug("Post registerUser userDto received {}", userDto.toString());
 
-        if (userService.existsByUserName(userDto.getUserName())) {
-            log.warn("UserName {} is Already Taken", userDto.getUserName());
+        if (userService.existsByUsername(userDto.getUsername())) {
+            log.warn("UserName {} is Already Taken", userDto.getUsername());
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Error: UserName is Already Taken!");
         }
 

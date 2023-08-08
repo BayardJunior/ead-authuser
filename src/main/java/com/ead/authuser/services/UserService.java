@@ -1,7 +1,6 @@
 package com.ead.authuser.services;
 
 import com.ead.authuser.models.UserModel;
-import com.ead.authuser.specifications.SpecificationTemplate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -19,7 +18,7 @@ public interface UserService {
 
     void save(UserModel userModel);
 
-    boolean existsByUserName(String userName);
+    boolean existsByUsername(String userName);
 
     boolean existsByEmail(String email);
 
