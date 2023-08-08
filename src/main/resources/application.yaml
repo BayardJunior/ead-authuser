@@ -25,3 +25,8 @@ logging:
     root: INFO
     sql: INFO
     web: DEBUG
+
+ead:
+  api:
+    url:
+      course: 'http://localhost:8082'

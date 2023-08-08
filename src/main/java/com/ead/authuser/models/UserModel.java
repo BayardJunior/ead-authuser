@@ -72,4 +72,8 @@ public class UserModel extends RepresentationModel<UserModel> implements Seriali
     @Fetch(FetchMode.SUBSELECT)
     private Set<UserCourseModel> userCourses;
 
+    public UserCourseModel convertToCourseUserModel(UUID courseId) {
+
+        return new UserCourseModel(null, courseId, this);
+    }
 }
