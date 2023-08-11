@@ -74,7 +74,7 @@ public class UserController {
         userService.deleteUser(optionalUserModel.get());
         log.debug("DELETE deleteUser userId deleted {}", userId);
         log.info("User userId {} deleted!", userId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("User deleted sucessfully");
+        return ResponseEntity.status(HttpStatus.OK).body("User deleted sucessfully");
     }
 
     @PutMapping("/{userId}")

@@ -7,6 +7,7 @@ import com.ead.authuser.services.UserCourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -25,5 +26,11 @@ public class UserCourseServiceImpl implements UserCourseService {
     public UserCourseModel save(UserCourseModel userCourseModel) {
 
         return this.repository.save(userCourseModel);
+    }
+
+    @Override
+    public void delete(UserModel userModel) {
+        List<UserCourseModel> userCourseModel = this.repository.findAllUserCourseModelIntoUser(userModel.getUserId());
+        this.repository.deleteAll(userCourseModel);
     }
 }
