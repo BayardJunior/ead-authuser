@@ -1,6 +1,5 @@
 package com.ead.authuser.controller;
 
-import com.ead.authuser.dtos.CourseDto;
 import com.ead.authuser.dtos.SubscriptionCourseDto;
 import com.ead.authuser.infrastructure.components.CourseComponentImpl;
 import com.ead.authuser.models.UserCourseModel;
@@ -9,7 +8,6 @@ import com.ead.authuser.services.UserCourseService;
 import com.ead.authuser.services.UserService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -38,9 +36,14 @@ public class UserCourseController {
     UserService userService;
 
     @GetMapping(value = "/users/{userId}/courses")
-    public ResponseEntity<Page<CourseDto>> findAllCoursesByUser(@PageableDefault(page = 0, size = 10, sort = "courseId", direction = Sort.Direction.ASC) Pageable pageable,
+    public ResponseEntity<Object> findAllCoursesByUser(@PageableDefault(page = 0, size = 10, sort = "courseId", direction = Sort.Direction.ASC) Pageable pageable,
                                                                 @PathVariable(value = "userId") UUID userId) {
+        Optional<UserModel> userModel = this.userService.findById(userId);
 
+        if (!userModel.isPresent()) {
+            log.warn("GET findAllCoursesByUser userId {} not found", userId);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User Not Found!");
+        }
         return ResponseEntity.status(HttpStatus.OK).body(this.courseComponent.findAllCoursesByUser(userId, pageable));
     }
 
@@ -67,7 +70,7 @@ public class UserCourseController {
         return ResponseEntity.status(HttpStatus.CREATED).body(userCourseModel);
     }
 
-    @DeleteMapping(value = "/users/course/{courseId}")
+    @DeleteMapping(value = "/users/courses/{courseId}")
     public ResponseEntity<Object> deleteUserCourseByCourse(@PathVariable(value = "courseId") UUID courseId) {
         if (!this.service.existsByCourseId(courseId)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("UserCourse not found!");

@@ -51,4 +51,14 @@ public class CourseComponentImpl {
 
         return result.getBody();
     }
+
+    public void deleteUserInCourse(UUID userId) {
+        String url = DEFAULT_URI_COURSE_SERVICES.concat(this.utilsService.deleteUserInCourseUrl(userId));
+
+        log.debug("Request Url: {}", url);
+        log.info("Request Url: {}", url);
+
+        restTemplate.exchange(url, HttpMethod.DELETE, null, String.class);
+
+    }
 }
