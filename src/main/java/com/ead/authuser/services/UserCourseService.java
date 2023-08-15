@@ -11,4 +11,8 @@ public interface UserCourseService {
     UserCourseModel save(UserCourseModel userCourseModel);
 
     void delete(UserModel userModel);
+
+    boolean existsByCourseId(UUID courseId);
+
+    void deleteUserCourseByCourse(UUID courseId);
 }

@@ -7,6 +7,7 @@ import com.ead.authuser.services.UserCourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,4 +34,17 @@ public class UserCourseServiceImpl implements UserCourseService {
         List<UserCourseModel> userCourseModel = this.repository.findAllUserCourseModelIntoUser(userModel.getUserId());
         this.repository.deleteAll(userCourseModel);
     }
+
+    @Override
+    public boolean existsByCourseId(UUID courseId) {
+
+        return this.repository.existsByCourseId(courseId);
+    }
+
+    @Transactional
+    @Override
+    public void deleteUserCourseByCourse(UUID courseId) {
+        this.repository.deleteAllByCourseId(courseId);
+    }
+
 }

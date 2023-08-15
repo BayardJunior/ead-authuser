@@ -43,21 +43,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void save(UserModel userModel) {
-        userRepository.save(userModel);
+        this.userRepository.save(userModel);
     }
 
     @Override
     public boolean existsByUsername(String username) {
-        return userRepository.existsByUsername(username);
+        return this.userRepository.existsByUsername(username);
     }
 
     @Override
     public boolean existsByEmail(String email) {
-        return userRepository.existsByEmail(email);
+        return this.userRepository.existsByEmail(email);
     }
 
     @Override
     public Page<UserModel> findAllUserPageble(Specification<UserModel> spec, Pageable pageable) {
-        return userRepository.findAll(spec, pageable);
+        return this.userRepository.findAll(spec, pageable);
     }
 }

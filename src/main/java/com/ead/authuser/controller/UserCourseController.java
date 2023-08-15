@@ -24,7 +24,7 @@ import java.util.UUID;
 @Log4j2
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
-@RequestMapping("/users/{userId}/courses")
+@RequestMapping()
 public class UserCourseController {
 
 
@@ -37,7 +37,7 @@ public class UserCourseController {
     @Autowired
     UserService userService;
 
-    @GetMapping
+    @GetMapping(value = "/users/{userId}/courses")
     public ResponseEntity<Page<CourseDto>> findAllCoursesByUser(@PageableDefault(page = 0, size = 10, sort = "courseId", direction = Sort.Direction.ASC) Pageable pageable,
                                                                 @PathVariable(value = "userId") UUID userId) {
 
@@ -45,7 +45,7 @@ public class UserCourseController {
     }
 
 
-    @PostMapping("/subscription")
+    @PostMapping("/users/{userId}/courses/subscription")
     public ResponseEntity<Object> saveSubscrptionUserInCourse(@PathVariable(value = "userId") UUID userId,
                                                               @RequestBody @Valid SubscriptionCourseDto subscriptionCourseDto) {
 
@@ -67,4 +67,14 @@ public class UserCourseController {
         return ResponseEntity.status(HttpStatus.CREATED).body(userCourseModel);
     }
 
+    @DeleteMapping(value = "/users/course/{courseId}")
+    public ResponseEntity<Object> deleteUserCourseByCourse(@PathVariable(value = "courseId") UUID courseId) {
+        if (!this.service.existsByCourseId(courseId)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("UserCourse not found!");
+
+        }
+        this.service.deleteUserCourseByCourse(courseId);
+        return ResponseEntity.status(HttpStatus.OK).body("UserCourse deleted successfuly!");
+
+    }
 }
