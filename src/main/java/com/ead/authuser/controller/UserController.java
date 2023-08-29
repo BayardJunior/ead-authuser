@@ -36,14 +36,8 @@ public class UserController {
     @GetMapping
     public ResponseEntity<Page<UserModel>> getAlluser(SpecificationTemplate.UserSpec userSpec,
                                                       @PageableDefault(page = 0, size = 10, sort = "userId",
-                                                              direction = Sort.Direction.ASC) Pageable pageable,
-                                                      @RequestParam(required = false) UUID courseId) {
-        Page<UserModel> page;
-        if (courseId != null) {
-            page = userService.findAllUserPageble(SpecificationTemplate.userCourseIdSpec(courseId).and(userSpec), pageable);
-        } else {
-            page = userService.findAllUserPageble(userSpec, pageable);
-        }
+                                                              direction = Sort.Direction.ASC) Pageable pageable) {
+        Page<UserModel> page = userService.findAllUserPageble(userSpec, pageable);
         if (!page.isEmpty()) {
             page.forEach(userModel -> userModel.add(linkTo(methodOn(UserController.class).getUserById(userModel.getUserId())).withSelfRel()));
         }
@@ -71,7 +65,7 @@ public class UserController {
             log.warn("DELETE deleteUser userId {} not found", userId);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found!");
         }
-        userService.deleteUser(optionalUserModel.get());
+        userService.deleteUserAndPublish(optionalUserModel.get());
         log.debug("DELETE deleteUser userId deleted {}", userId);
         log.info("User userId {} deleted!", userId);
         return ResponseEntity.status(HttpStatus.OK).body("User deleted sucessfully");
@@ -95,7 +89,7 @@ public class UserController {
         userModel.setCpf(userDto.getCpf());
         userModel.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
 
-        userService.save(userModel);
+        userService.updateUserAndPublish(userModel);
         log.debug("PUT updateUser userId updated {}", userId);
         log.info("User userId {} deleted!", userId);
 
@@ -122,7 +116,7 @@ public class UserController {
         userModel.setPassword(userDto.getPassword());
         userModel.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
 
-        userService.save(userModel);
+        userService.updateUserPassword(userModel);
         log.debug("PUT updatePassword userId updated {}", userId);
         log.info("User userId {} updated password!", userId);
 
@@ -146,7 +140,7 @@ public class UserController {
         userModel.setImageURL(userDto.getImageUrl());
         userModel.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
 
-        userService.save(userModel);
+        userService.updateUserAndPublish(userModel);
         log.debug("PUT updateImage userId {} updated", userId);
         log.info("User userId {} updated image!", userId);
 
