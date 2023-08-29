@@ -69,7 +69,7 @@ public class UserModel extends RepresentationModel<UserModel> implements Seriali
         UserEventDto userEventDto = new UserEventDto();
         BeanUtils.copyProperties(this, userEventDto);
         userEventDto.setUserType(this.getUserType().toString());
-        userEventDto.setUserType(this.getUserStatus().toString());
+        userEventDto.setUserStatus(this.getUserStatus().toString());
         return userEventDto;
     }
 

@@ -1,5 +1,7 @@
 server:
   port: 8087
+  servlet:
+    context-path: /ead-authuser
 
 spring:
   application:
@@ -37,6 +39,7 @@ ead:
   broker:
     exchange:
       userEvent: ead.user-event
+
 eureka:
   client:
     service-url:
