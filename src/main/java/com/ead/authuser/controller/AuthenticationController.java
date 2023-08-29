@@ -50,7 +50,7 @@ public class AuthenticationController {
         userModel.setCreationDate(LocalDateTime.now(ZoneId.of("UTC")));
         userModel.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
 
-        userService.save(userModel);
+        userService.saveAndPublish(userModel);
         log.debug("Post registerUser userId saved {}", userModel.getUserId());
         log.info("User saved successfully userId {}", userModel.getUserId());
 

@@ -1,5 +1,7 @@
 package com.ead.authuser.services.impl;
 
+import com.ead.authuser.enums.ActionType;
+import com.ead.authuser.infrastructure.event.publishers.UserEventPublisher;
 import com.ead.authuser.models.UserModel;
 import com.ead.authuser.repositories.UserRepository;
 import com.ead.authuser.services.UserService;
@@ -19,6 +21,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    UserEventPublisher publisher;
 
     @Override
     public List<UserModel> findAllUser() {
@@ -54,5 +59,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public Page<UserModel> findAllUserPageble(Specification<UserModel> spec, Pageable pageable) {
         return userRepository.findAll(spec, pageable);
+    }
+    @Transactional
+    @Override
+    public void saveAndPublish(UserModel userModel) {
+        this.save(userModel);
+        this.publisher.publishUserEvent(userModel.convert2UserEventDto(), ActionType.CREATE);
     }
 }
