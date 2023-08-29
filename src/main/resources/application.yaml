@@ -20,6 +20,8 @@ spring:
   output:
     ansi:
       enabled: always
+  rabbitmq:
+    addresses: amqps://adhaesfa:ustl0ZLJ21Qb8UcQJD4HZDWnPD-wSJvF@shrimp.rmq.cloudamqp.com/adhaesfa
 
 logging:
   level:
