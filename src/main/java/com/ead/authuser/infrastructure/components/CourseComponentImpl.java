@@ -2,13 +2,14 @@ package com.ead.authuser.infrastructure.components;
 
 import com.ead.authuser.dtos.CourseDto;
 import com.ead.authuser.dtos.ResponsePageDto;
-import com.ead.authuser.models.UserModel;
 import com.ead.authuser.services.UtilsService;
+import io.github.resilience4j.retry.annotation.Retry;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Log4j2
@@ -31,6 +34,10 @@ public class CourseComponentImpl {
     @Value("${ead.api.url.course}")
     private String DEFAULT_URI_COURSE_SERVICES;
 
+    /**
+     * Exemplo prático de como se utiliza o retry e fallback
+     */
+    @Retry(name = "retryInstance", fallbackMethod = "retryFallback")
     public Page<CourseDto> findAllCoursesByUser(UUID userId, Pageable pageable) {
 
         ResponseEntity<ResponsePageDto<CourseDto>> result = null;
@@ -50,6 +57,11 @@ public class CourseComponentImpl {
         log.info("Ending request /courses userId {} ", userId);
 
         return result.getBody();
+    }
+
+    public Page<CourseDto> retryFallback(UUID userId, Pageable pageable, Throwable throwable) {
+        log.error("inside method retryFallback, cause - {}", throwable.toString());
+        return new PageImpl<>(new ArrayList<>());
     }
 
     public void deleteUserInCourse(UUID userId) {

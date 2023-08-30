@@ -69,6 +69,7 @@ public class UserServiceImpl implements UserService {
         return saved;
     }
 
+    @Transactional
     @Override
     public void deleteUserAndPublish(UserModel userModel) {
         this.deleteUser(userModel);
